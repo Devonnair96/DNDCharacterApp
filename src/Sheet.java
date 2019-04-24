@@ -4,42 +4,47 @@ import java.util.List;
 
 public class Sheet {
         //Class variables representing character attributes.
-	Stats playerstats;
+	private Stats playerstats;
+        private List<PlayerClass> pclass;
+        boolean multi = false;
 	private String name, race;
 	private String[] stat = {"str","dex","con","wis","int","cha"};
 	private int level, prof, init, ac, speed, hp, hpmax, tempHP;
 	private String alignment,background,ideals;
-	private List<String> skills;
+	
 	private boolean inspiration = false;
 	private boolean[] hassave = {false,false,false,false,false,false};
 
 	
-	//constructors
-	public Sheet(String n)
-	{
-		name = n;
-		playerstats = new Stats();
-	}
-	
+	//constructor
 	//Set base character traits manually to keep track of them
 	public Sheet(String n, String r, int[] stat, int l)
 	{
-		playerstats = new Stats();
-		name = n;
-		race = r;
-		playerstats.setStatsManually(stat);
-		level = l;
-		setProf();
-		skills = new ArrayList<String>();
+            pclass = new ArrayList<>();
+            playerstats = new Stats();
+            name = n;
+            race = r;
+            playerstats.setStatsManually(stat);
+            level = l;
+            setProf();
+		
 	}
 	
-	//track skills
-	public void addSkill(String desc)
-	{
-		skills.add(desc);
-	}
 	
 	//setters
+        public void addClass(String c)
+        {
+            pclass.add(new PlayerClass(c));
+            if(pclass.size() > 1)
+            {
+                multi = true;
+            }
+        }
+        public void addSkill(int pos,String desc)
+	{
+            pclass.get(pos).addSkill(desc);
+	}
+        
 	public void setTempHP(int tempHP) {
 		this.tempHP = tempHP;
 	}
@@ -153,10 +158,11 @@ public class Sheet {
 	public String printSheet()
 	{
 		String a = printBaseTraits();
-		String b = printDesc();
-		String c = "**********\nStats(Modifier): " + playerstats.printStatsAndMod() + "\n";
-		String d = printSaves();
-		return a + b + c + d;
+                String b = printClass();
+		String c = printDesc();
+		String d = "**********\nStats(Modifier): " + playerstats.printStatsAndMod() + "\n";
+		String e = printSaves();
+		return a + b + c + d + e;
 	}
 	public String printBaseTraits()
 	{
@@ -165,23 +171,23 @@ public class Sheet {
 				"\nProficiency Bonus: +" + prof + "\n"; 
 		return a;
 	}
+        public String printClass()
+        {
+            String b = "";
+            for(int i=0;i<pclass.size();i++)
+            {
+                b += pclass.get(i).toString();
+            }
+            
+            return b;
+        }
 	public String printDesc()
 	{
-		String b = "**********\n";
-		b += "Background: " + getBackground() + "\nAlignment: " + getAlignment() + "\nSkills: " + printSkills() + "\n";
-		return b;
+		String c = "**********\n";
+		c += "Background: " + getBackground() + "\nAlignment: " + getAlignment() + "\n";
+		return c;
 	}
-	public String printSkills()
-	{
-		String s = "";
-		for(int i=0;i<skills.size();i++)
-		{
-			s+="\n" + i + ". ";
-			s+=skills.get(i);
-			
-		}
-		return s;
-	}
+	
 	public String printSaves()
 	{
 		String d = "Saving Throws: ";
