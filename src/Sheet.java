@@ -3,6 +3,7 @@ import java.util.List;
 
 
 public class Sheet {
+        //Class variables representing character attributes.
 	Stats playerstats;
 	private String name, race;
 	private String[] stat = {"str","dex","con","wis","int","cha"};
