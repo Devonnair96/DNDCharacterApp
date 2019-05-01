@@ -6,14 +6,15 @@ public class Sheet {
         //Class variables representing character attributes.
 	private Stats playerstats;
         private List<PlayerClass> pclass;
-        boolean multi = false;
+       
 	private String name, race;
-	private String[] stat = {"str","dex","con","wis","int","cha"};
+	private final String[] stat = {"str","dex","con","wis","int","cha"};
 	private int level, prof, init, ac, speed, hp, hpmax, tempHP;
-	private String alignment,background,ideals;
+	private String alignment,background;
 	
 	private boolean inspiration = false;
 	private boolean[] hassave = {false,false,false,false,false,false};
+        
 
 	
 	//constructor
@@ -22,6 +23,7 @@ public class Sheet {
 	{
             pclass = new ArrayList<>();
             playerstats = new Stats();
+            
             name = n;
             race = r;
             playerstats.setStatsManually(stat);
@@ -32,13 +34,23 @@ public class Sheet {
 	
 	
 	//setters
-        public void addClass(String c)
+        public void addClass(String c,int l)
         {
-            pclass.add(new PlayerClass(c));
-            if(pclass.size() > 1)
+            pclass.add(new PlayerClass(c,l));
+            if(level != getClasslvl())
             {
-                multi = true;
+                setLevel(getClasslvl());
             }
+            
+        }
+        public int getClasslvl()
+        {
+            int l=0;
+            for(int i=0;i<pclass.size();i++)
+            {
+                l+=pclass.get(i).getLvl();
+            }
+            return l;
         }
         public void addSkill(int pos,String desc)
 	{
@@ -83,6 +95,7 @@ public class Sheet {
 
 	public void setLevel(int level) {
 		this.level = level;
+                setProf();
 	}
 
 	
@@ -168,7 +181,7 @@ public class Sheet {
 	{
 		String a = "**********\n";
 		a += "Name: " + name + "\n" + "Race: " + race + "\n" + "Player Level: " + level + "\nHP: " + hpmax + "/" + hp + 
-				"\nProficiency Bonus: +" + prof + "\n"; 
+				"  Temp HP: " + tempHP + "\nProficiency Bonus: +" + prof + "\n"; 
 		return a;
 	}
         public String printClass()
