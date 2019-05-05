@@ -15,7 +15,7 @@ public class DNDdriver {
 
 	public static void main(String[] args) {
 		
-            String skill = "Martial Arts: make an unarmed attack as a bonus action.";
+            String s1 = "Martial Arts: make an unarmed attack as a bonus action.";
             String s2 = "Sneak attack: you can add a number of d6's to your damage roll when you attack stealthily.";
             
                 //array represents characters physical and mental statistics. 
@@ -27,11 +27,12 @@ public class DNDdriver {
 		two.setHpMax(125);
 		two.setAlignment("Neutral Good");
 		two.setBackground("Acolyte");
-		two.addSkill(0,skill);
-                two.addSkill(1,s2);
+		two.addClassSkill(0,s1);
+                two.addClassSkill(1,s2);
 		two.setSavingThrows(1, true);   //has proficiency in dexerity, constitution, and wisdom saving throws
 		two.setSavingThrows(2, true);
 		two.setSavingThrows(3, true);
+                two.addProficiencies("Acrobatics",1);
 		System.out.println(two.printSheet()); //output 
 		
 	}
