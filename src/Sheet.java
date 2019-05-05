@@ -6,6 +6,7 @@ public class Sheet {
         //Class variables representing character attributes.
 	private Stats playerstats;
         private List<PlayerClass> pclass;
+        private List<SkillProficiencies> skillProf;
        
 	private String name, race;
 	private final String[] stat = {"str","dex","con","wis","int","cha"};
@@ -23,7 +24,7 @@ public class Sheet {
 	{
             pclass = new ArrayList<>();
             playerstats = new Stats();
-            
+            skillProf = new ArrayList<>();
             name = n;
             race = r;
             playerstats.setStatsManually(stat);
@@ -31,10 +32,8 @@ public class Sheet {
             setProf();
 		
 	}
-	
-	
-	//setters
-        public void addClass(String c,int l)
+        
+	public void addClass(String c,int l)            //manually enter a character class
         {
             pclass.add(new PlayerClass(c,l));
             if(level != getClasslvl())
@@ -52,24 +51,52 @@ public class Sheet {
             }
             return l;
         }
-        public void addSkill(int pos,String desc)
+        public void addClassSkill(int pos,String desc)      //manually add class features
 	{
             pclass.get(pos).addSkill(desc);
 	}
+	public void addProficiencies(String skill,int param)
+        {
+            skillProf.add(new SkillProficiencies(skill,param));
+        }
         
-	public void setTempHP(int tempHP) {
+	//setters
+        public void setName(String name) {
+		this.name = name;
+	}
+        public void setRace(String race) {
+		this.race = race;
+	}
+        public void setLevel(int level) {
+		this.level = level;
+                setProf();
+	}
+        public void setHpMax(int hpmax) {
+		this.hpmax = hpmax;
+	}
+        public void setHp(int hp) {
+		this.hp = hp;
+	}
+        public void setTempHP(int tempHP) {
 		this.tempHP = tempHP;
 	}
-	private void setProf()
+        private void setProf()
 	{
 		prof = (int) Math.ceil((level/4))+1;
+	}
+	public void setBackground(String background) {
+		this.background = background;
 	}
 	public void setAlignment(String s)
 	{
 		alignment = s;
 	}
-	public void setBackground(String background) {
-		this.background = background;
+        public void setInspiration(boolean has)
+        {
+         inspiration = has;   
+        }
+        public void setAc(int ac) {
+		this.ac = ac;
 	}
 	public void setSavingThrows(int i, boolean has)
 	{
@@ -85,58 +112,47 @@ public class Sheet {
 	{
 		init = playerstats.getModifier(1);
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setRace(String race) {
-		this.race = race;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-                setProf();
-	}
-
-	
-	public void setAc(int ac) {
-		this.ac = ac;
-	}
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	public void setHp(int hp) {
-		this.hp = hp;
-	}
-	public void setHpMax(int hpmax) {
-		this.hpmax = hpmax;
-	}
-
-
+	
+        
+        
 	//getters
-	public String getBackground() {
-		return background;
-	}
-
-	public String getName() {
+        public String getName() {
 		return name;
 	}
-
-	public String getRace() {
+        public String getRace() {
 		return race;
 	}
-
-	public int getLevel() {
+        public int getLevel() {
 		return level;
 	}
-
-	public int getProf() {
+	public int getmaxHP() {
+		return hpmax;
+	}
+        public int getHp() {
+		return hp;
+	}
+        public int getTempHP() {
+		return tempHP;
+	}
+        public int getProf() {
 		return prof;
 	}
-
-	public String getAlignment() {
+        public String getBackground() {
+		return background;
+	}
+        public String getAlignment() {
 		return alignment;
 	}
+        public String getInspiration()
+        {
+            if(inspiration == true)
+            {return "yes";}
+            else
+            {return "no";}
+        }
 	public int getSavingThrow(int ind)
 	{
 		if(hassave[ind] == true)
@@ -157,25 +173,19 @@ public class Sheet {
 	public int getSpeed() {
 		return speed;
 	}
-	public int getHp() {
-		return hp;
-	}
-	public int getmaxHP() {
-		return hpmax;
-	}
-	public int getTempHP() {
-		return tempHP;
-	}
+	
+	
+	
 	
 	//Prints
 	public String printSheet()
 	{
-		String a = printBaseTraits();
-                String b = printClass();
-		String c = printDesc();
-		String d = "**********\nStats(Modifier): " + playerstats.printStatsAndMod() + "\n";
-		String e = printSaves();
-		return a + b + c + d + e;
+		String a = printBaseTraits()  + printDesc() +
+                        "**********\nArmor Class: " + ac + "\nInitiative: " + 
+                        playerstats.plusminus(init) + "  Speed: " + speed + 
+                        "ft per 6 sec.\nStats(Modifier): " + playerstats.printStatsAndMod() + 
+                        "\n" + printSaves() + "\n" + printSkillProf() + "\n" + printClass();
+		return a;
 	}
 	public String printBaseTraits()
 	{
@@ -196,8 +206,8 @@ public class Sheet {
         }
 	public String printDesc()
 	{
-		String c = "**********\n";
-		c += "Background: " + getBackground() + "\nAlignment: " + getAlignment() + "\n";
+		String c = "**********\nBackground: " + getBackground() + "\nAlignment: " 
+                        + getAlignment() + "\nInspiration: " + getInspiration() + "\n";
 		return c;
 	}
 	
@@ -211,6 +221,14 @@ public class Sheet {
 		return d;
 		
 	}
-	
+	public String printSkillProf()
+        {
+            String a = "Skill Proficiencies:";
+            for(int i=0;i<skillProf.size();i++)
+            {
+                a += " " + skillProf.get(i).printSkills() + "(" + playerstats.plusminus(playerstats.getModifier(skillProf.get(i).getParam())) + ")";
+            }
+            return a;
+        }
 
 }
