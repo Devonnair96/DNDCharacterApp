@@ -17,10 +17,10 @@ public class DNDdriver {
 		
             String s1 = "Martial Arts: make an unarmed attack as a bonus action.";
             String s2 = "Sneak attack: you can add a number of d6's to your damage roll when you attack stealthily.";
-            
+            String[] lang = {"Common","Elvish","Gnomish","Draconic"};
                 //array represents characters physical and mental statistics. 
 		int[] ar = {23,22,16,19,11,12};
-		Sheet two = new Sheet("Connor","elf",ar,12,20,60,120,120, "Neutral Good", "Acolyte");    //creates a new character and add attributes.
+		Sheet two = new Sheet("Connor","elf",ar,12,20,60,120,120, "Neutral Good", "Acolyte",lang);    //creates a new character and add attributes.
 		two.addClass("Monk",9);
                 two.addClass("Rogue",3);                        //allows for characters to take more than one class.
                
