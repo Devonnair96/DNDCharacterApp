@@ -9,6 +9,7 @@ public class Sheet {
         private List<SkillProficiencies> skillProf;
        
 	private String name, race, hitdie;
+        private String[] languages;
 	private final String[] stat = {"str","dex","con","wis","int","cha"};
 	private int level, prof, init, ac, speed, hp, hpmax, tempHP,HDmax, HD;
 	private String alignment,background;
@@ -20,11 +21,12 @@ public class Sheet {
 	
 	//constructor
 	//Set base character traits manually to keep track of them
-	public Sheet(String name, String race, int[] stat, int level,int ac,int speed, int hp, int hpmax, String align, String back)
+	public Sheet(String name, String race, int[] stat, int level,int ac,int speed, int hp, int hpmax, String align, String back,String[] lang)
 	{
             pclass = new ArrayList<>();
             playerstats = new Stats();
             skillProf = new ArrayList<>();
+            languages = lang;
             this.name = name;
             this.race = race;
             this.hitdie = "";
@@ -242,7 +244,7 @@ public class Sheet {
 	public String printDesc()
 	{
 		String c = "**********\nBackground: " + getBackground() + "\nAlignment: " 
-                        + getAlignment() + "\nInspiration: " + getInspiration() + "\n";
+                        + getAlignment() + "\nKnown Languages: " + printLanguages() + "\nInspiration: " + getInspiration() + "\n";
 		return c;
 	}
 	
@@ -264,6 +266,15 @@ public class Sheet {
                 a += "      " + skillProf.get(i).printSkills() + "(" + playerstats.plusminus(playerstats.getModifier(skillProf.get(i).getParam())) + ")";
             }
             return a;
+        }
+        public String printLanguages()
+        {
+            String l = languages[0];
+            for(int i=1;i<languages.length;i++)
+            {
+                l+=", " + languages[i];
+            }
+            return l;
         }
 
 }
