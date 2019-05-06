@@ -8,9 +8,9 @@ public class Sheet {
         private List<PlayerClass> pclass;
         private List<SkillProficiencies> skillProf;
        
-	private String name, race;
+	private String name, race, hitdie;
 	private final String[] stat = {"str","dex","con","wis","int","cha"};
-	private int level, prof, init, ac, speed, hp, hpmax, tempHP;
+	private int level, prof, init, ac, speed, hp, hpmax, tempHP,HDmax, HD;
 	private String alignment,background;
 	
 	private boolean inspiration = false;
@@ -20,20 +20,29 @@ public class Sheet {
 	
 	//constructor
 	//Set base character traits manually to keep track of them
-	public Sheet(String n, String r, int[] stat, int l)
+	public Sheet(String name, String race, int[] stat, int level,int ac,int speed, int hp, int hpmax, String align, String back)
 	{
             pclass = new ArrayList<>();
             playerstats = new Stats();
             skillProf = new ArrayList<>();
-            name = n;
-            race = r;
+            this.name = name;
+            this.race = race;
+            this.hitdie = "";
             playerstats.setStatsManually(stat);
-            level = l;
+            setInit();
+            this.level = level;
             setProf();
+            this.ac = ac;
+            this.speed = speed;
+            this.hp = hp;
+            this.hpmax = hpmax;
+            this.alignment = align;
+            this.background = back;
+            
 		
 	}
         
-	public void addClass(String c,int l)            //manually enter a character class
+	public void addClass(String c,int l)    //manually enter a character class
         {
             pclass.add(new PlayerClass(c,l));
             if(level != getClasslvl())
@@ -42,7 +51,7 @@ public class Sheet {
             }
             
         }
-        public int getClasslvl()
+        public int getClasslvl()                //gets the total player level based on how many class levels they have. 
         {
             int l=0;
             for(int i=0;i<pclass.size();i++)
@@ -80,6 +89,18 @@ public class Sheet {
         public void setTempHP(int tempHP) {
 		this.tempHP = tempHP;
 	}
+        public void setHitDie(String type)
+        {
+            hitdie = type;
+        }
+        public void setMaxHD(int max)
+        {
+            HDmax = max;
+        }
+        public void setnumHD(int num)
+        {
+            HD = num;
+        }
         private void setProf()
 	{
 		prof = (int) Math.ceil((level/4))+1;
@@ -137,6 +158,18 @@ public class Sheet {
         public int getTempHP() {
 		return tempHP;
 	}
+        public String getHitDie()
+        {
+            return hitdie;
+        }
+        public int getHD()
+        {
+            return HD;
+        }
+        public int getHDmax()
+        {
+            return HDmax;
+        }
         public int getProf() {
 		return prof;
 	}
@@ -184,14 +217,16 @@ public class Sheet {
                         "**********\nArmor Class: " + ac + "\nInitiative: " + 
                         playerstats.plusminus(init) + "  Speed: " + speed + 
                         "ft per 6 sec.\nStats(Modifier): " + playerstats.printStatsAndMod() + 
-                        "\n" + printSaves() + "\n" + printSkillProf() + "\n" + printClass();
+                        "\n" + printSaves() + "\n" + printSkillProf();
 		return a;
 	}
 	public String printBaseTraits()
 	{
 		String a = "**********\n";
-		a += "Name: " + name + "\n" + "Race: " + race + "\n" + "Player Level: " + level + "\nHP: " + hpmax + "/" + hp + 
-				"  Temp HP: " + tempHP + "\nProficiency Bonus: +" + prof + "\n"; 
+		a += "Name: " + name + "\n" + "Race: " + race + "\n" + "Player Level: " + level + 
+                        "\nClass: " + printClass() + "\nHP: " + hpmax + "/" + hp + "  Temp HP: " + 
+                        tempHP + "\nHit Die: " + hitdie + " max: " + HDmax + " left: " + HD + 
+                        "\nProficiency Bonus: +" + prof + "\n"; 
 		return a;
 	}
         public String printClass()
@@ -223,10 +258,10 @@ public class Sheet {
 	}
 	public String printSkillProf()
         {
-            String a = "Skill Proficiencies:";
+            String a = "Skill Proficiencies:\n";
             for(int i=0;i<skillProf.size();i++)
             {
-                a += " " + skillProf.get(i).printSkills() + "(" + playerstats.plusminus(playerstats.getModifier(skillProf.get(i).getParam())) + ")";
+                a += "      " + skillProf.get(i).printSkills() + "(" + playerstats.plusminus(playerstats.getModifier(skillProf.get(i).getParam())) + ")";
             }
             return a;
         }
