@@ -20,20 +20,17 @@ public class DNDdriver {
             
                 //array represents characters physical and mental statistics. 
 		int[] ar = {23,22,16,19,11,12};
-		Sheet two = new Sheet("Connor","elf",ar,12);    //creates a new character and add attributes.
+		Sheet two = new Sheet("Connor","elf",ar,12,20,60,120,120, "Neutral Good", "Acolyte");    //creates a new character and add attributes.
 		two.addClass("Monk",9);
-                two.addClass("Rogue",3);                          //allows for characters to take more than one class.
-                two.setHp(125);
-		two.setHpMax(125);
-		two.setAlignment("Neutral Good");
-		two.setBackground("Acolyte");
-		two.addClassSkill(0,s1);
+                two.addClass("Rogue",3);                        //allows for characters to take more than one class.
+               
+		two.addClassSkill(0,s1);                        //adds two skills, one from the monk class and one from the rogue class. 
                 two.addClassSkill(1,s2);
-		two.setSavingThrows(1, true);   //has proficiency in dexerity, constitution, and wisdom saving throws
-		two.setSavingThrows(2, true);
+		two.setSavingThrows(1, true);                   //has proficiency in dexerity, constitution, and wisdom saving throws
+		two.setSavingThrows(2, true);   
 		two.setSavingThrows(3, true);
-                two.addProficiencies("Acrobatics",1);
-		System.out.println(two.printSheet()); //output 
+                two.addProficiencies("Acrobatics",1);           //adding the acrobatics skill proficiency
+		System.out.println(two.printSheet());           //output 
 		
 	}
 

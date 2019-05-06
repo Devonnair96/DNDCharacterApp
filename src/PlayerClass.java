@@ -7,14 +7,14 @@ import java.util.List;
  */
 public class PlayerClass {
     
-   private String classType;
+   private String className;
    private int classlvl;
     private List<String> classSkills;
     
         //constructor
     public PlayerClass(String c,int l)
     {
-        classType = c;
+        className = c;
         classlvl = l;
         classSkills = new ArrayList<String>();
     }
@@ -42,10 +42,15 @@ public class PlayerClass {
     {
         return classlvl;
     }
+    public String getClassName()
+    {
+        return className;
+    }
+    
     @Override
     public String toString()
     {
-        return classType + " lvl " + classlvl + ":\n" + getSkills();
+        return className + " lvl " + classlvl + " ";
         
     }
 }

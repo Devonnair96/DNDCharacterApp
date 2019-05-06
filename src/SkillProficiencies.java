@@ -1,5 +1,5 @@
 /**
- * Abstract: basically a struct to keep track of the name and modifier of the skill. 
+ * Abstract: basically a struct to keep track of the name and modifier of a skill proficiency. 
  * @author devonnair
  */
 public class SkillProficiencies {
