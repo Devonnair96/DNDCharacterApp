@@ -20,10 +20,10 @@ public class DNDdriver {
             String[] lang = {"Common","Elvish","Gnomish","Draconic"};
                 //array represents characters physical and mental statistics. 
 		int[] ar = {23,22,16,19,11,12};
-		Sheet two = new Sheet("Connor","elf",ar,12,20,60,120,120, "Neutral Good", "Acolyte",lang);    //creates a new character and add attributes.
+		Sheet two = new Sheet("Connor","elf",ar,12,20,60,120,120, "Neutral Good", "Acolyte","Male","103","5'6","180","Brown","Black","Medium","","","","");    //creates a new character and add attributes.
 		two.addClass("Monk",9);
                 two.addClass("Rogue",3);                        //allows for characters to take more than one class.
-               
+                two.addLanguage(lang);
 		two.addClassSkill(0,s1);                        //adds two skills, one from the monk class and one from the rogue class. 
                 two.addClassSkill(1,s2);
 		two.setSavingThrows(1, true);                   //has proficiency in dexerity, constitution, and wisdom saving throws

@@ -5,14 +5,14 @@ import java.util.List;
 public class Sheet {
         //Class variables representing character attributes.
 	private Stats playerstats;
+        private BackgroundTraits background;
         private List<PlayerClass> pclass;
         private List<SkillProficiencies> skillProf;
        
 	private String name, race, hitdie;
-        private String[] languages;
+        
 	private final String[] stat = {"str","dex","con","wis","int","cha"};
 	private int level, prof, init, ac, speed, hp, hpmax, tempHP,HDmax, HD;
-	private String alignment,background;
 	
 	private boolean inspiration = false;
 	private boolean[] hassave = {false,false,false,false,false,false};
@@ -21,12 +21,12 @@ public class Sheet {
 	
 	//constructor
 	//Set base character traits manually to keep track of them
-	public Sheet(String name, String race, int[] stat, int level,int ac,int speed, int hp, int hpmax, String align, String back,String[] lang)
+	public Sheet(String name, String race, int[] stat, int level,int ac,int speed, int hp, int hpmax, String align, String back,String gen,String age, String height, String weight,String eye, String hair, String size, String personality, String ideal, String flaw,String bond)
 	{
             pclass = new ArrayList<>();
             playerstats = new Stats();
             skillProf = new ArrayList<>();
-            languages = lang;
+            background = new BackgroundTraits(back,align,gen,age,height,weight,eye,hair,size,personality,ideal,flaw,bond);
             this.name = name;
             this.race = race;
             this.hitdie = "";
@@ -38,10 +38,7 @@ public class Sheet {
             this.speed = speed;
             this.hp = hp;
             this.hpmax = hpmax;
-            this.alignment = align;
-            this.background = back;
             
-		
 	}
         
 	public void addClass(String c,int l)    //manually enter a character class
@@ -70,7 +67,13 @@ public class Sheet {
         {
             skillProf.add(new SkillProficiencies(skill,param));
         }
-        
+        public void addLanguage(String[] l)
+        {
+            for(int i=0;i<l.length;i++)
+            {
+                background.addLang(l[i]);
+            }
+        }
 	//setters
         public void setName(String name) {
 		this.name = name;
@@ -106,13 +109,6 @@ public class Sheet {
         private void setProf()
 	{
 		prof = (int) Math.ceil((level/4))+1;
-	}
-	public void setBackground(String background) {
-		this.background = background;
-	}
-	public void setAlignment(String s)
-	{
-		alignment = s;
 	}
         public void setInspiration(boolean has)
         {
@@ -175,12 +171,6 @@ public class Sheet {
         public int getProf() {
 		return prof;
 	}
-        public String getBackground() {
-		return background;
-	}
-        public String getAlignment() {
-		return alignment;
-	}
         public String getInspiration()
         {
             if(inspiration == true)
@@ -219,7 +209,7 @@ public class Sheet {
                         "**********\nArmor Class: " + ac + "\nInitiative: " + 
                         playerstats.plusminus(init) + "  Speed: " + speed + 
                         "ft per 6 sec.\nStats(Modifier): " + playerstats.printStatsAndMod() + 
-                        "\n" + printSaves() + "\n" + printSkillProf();
+                        "\n" + printSaves() + "\n" + printSkillProf() + "\n\n" + background.printDesc();
 		return a;
 	}
 	public String printBaseTraits()
@@ -243,8 +233,8 @@ public class Sheet {
         }
 	public String printDesc()
 	{
-		String c = "**********\nBackground: " + getBackground() + "\nAlignment: " 
-                        + getAlignment() + "\nKnown Languages: " + printLanguages() + "\nInspiration: " + getInspiration() + "\n";
+		String c = "**********\nBackground: " + background.getBack() + "\nAlignment: " 
+                        + background.getAlign() + "\nKnown Languages: " + background.getLang() + "\nInspiration: " + getInspiration() + "\n";
 		return c;
 	}
 	
@@ -267,14 +257,6 @@ public class Sheet {
             }
             return a;
         }
-        public String printLanguages()
-        {
-            String l = languages[0];
-            for(int i=1;i<languages.length;i++)
-            {
-                l+=", " + languages[i];
-            }
-            return l;
-        }
+        
 
 }

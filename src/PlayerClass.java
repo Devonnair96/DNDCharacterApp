@@ -7,8 +7,8 @@ import java.util.List;
  */
 public class PlayerClass {
     
-   private String className;
-   private int classlvl;
+    private String className;
+    private int classlvl;
     private List<String> classSkills;
     
         //constructor
