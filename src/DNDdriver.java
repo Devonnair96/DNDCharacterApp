@@ -17,6 +17,8 @@ public class DNDdriver {
 		
             String s1 = "Martial Arts: make an unarmed attack as a bonus action.";
             String s2 = "Sneak attack: you can add a number of d6's to your damage roll when you attack stealthily.";
+            String[] weapon = {"All simple weapons","All Martial weapons"};
+            String[] armor = {"none"};
             String[] lang = {"Common","Elvish","Gnomish","Draconic"};
                 //array represents characters physical and mental statistics. 
 		int[] ar = {23,22,16,19,11,12};
@@ -26,6 +28,8 @@ public class DNDdriver {
                 two.addLanguage(lang);
 		two.addClassSkill(0,s1);                        //adds two skills, one from the monk class and one from the rogue class. 
                 two.addClassSkill(1,s2);
+                two.setWeapProf(0, weapon);
+                two.setArmorProf(0,armor);
 		two.setSavingThrows(1, true);                   //has proficiency in dexerity, constitution, and wisdom saving throws
 		two.setSavingThrows(2, true);   
 		two.setSavingThrows(3, true);

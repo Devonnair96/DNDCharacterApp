@@ -63,6 +63,20 @@ public class Sheet {
 	{
             pclass.get(pos).addSkill(desc);
 	}
+        public void setWeapProf(int pos, String[] weap)
+        {
+            for(int i=0;i<weap.length;i++)
+            {
+                pclass.get(pos).addWeapProf(weap[i]);
+            }
+        }
+        public void setArmorProf(int pos, String[] armor)
+        {
+            for(int i=0;i<armor.length;i++)
+            {
+                pclass.get(pos).addArmProf(armor[i]);
+            }
+        }
 	public void addProficiencies(String skill,int param)
         {
             skillProf.add(new SkillProficiencies(skill,param));
@@ -209,7 +223,8 @@ public class Sheet {
                         "**********\nArmor Class: " + ac + "\nInitiative: " + 
                         playerstats.plusminus(init) + "  Speed: " + speed + 
                         "ft per 6 sec.\nStats(Modifier): " + playerstats.printStatsAndMod() + 
-                        "\n" + printSaves() + "\n" + printSkillProf() + "\n\n" + background.printDesc();
+                        "\n" + printSaves() + "\n" + printProf() + "\n\n" + 
+                        background.printDesc();
 		return a;
 	}
 	public String printBaseTraits()
@@ -248,12 +263,17 @@ public class Sheet {
 		return d;
 		
 	}
-	public String printSkillProf()
+	public String printProf()
         {
             String a = "Skill Proficiencies:\n";
             for(int i=0;i<skillProf.size();i++)
             {
                 a += "      " + skillProf.get(i).printSkills() + "(" + playerstats.plusminus(playerstats.getModifier(skillProf.get(i).getParam())) + ")";
+            }
+            
+            for(int i=0;i<pclass.size();i++)
+            {
+                a+= "\n" + pclass.get(i).getClassName() + ": \n" + " Weapon Proficiencies: " +pclass.get(i).getWeapProf() + "\n Armor Proficiencies: " + pclass.get(i).getArmProf();
             }
             return a;
         }
